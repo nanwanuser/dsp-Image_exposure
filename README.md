@@ -14,7 +14,7 @@
 - 自动测量和比较不同实现方式的性能（时钟周期数）
 
 ## 系统要求
-- 开发环境：Code Composer Studio 5.0
+- 开发环境：Code Composer Studio 5.5
 - 目标硬件：TI C6748 DSP处理器  
 - 输入图像：两幅相同尺寸的BMP格式图像
 
@@ -41,13 +41,10 @@ Image_exposure/
 | 线性汇编优化 | 使用线性汇编，通过SIMD指令（如`AVGU4`）进行并行处理，每次处理8个像素 | 3-5倍 |
 
 ## 运行方法
-1. 在Code Composer Studio 5.0中创建新项目
-2. 将所有源文件添加到项目中
-3. 在项目属性中设置目标为TI C6748 DSP
-4. 在bmps文件夹中放置两幅名为`ImageA.bmp`和`ImageB.bmp`的测试图像
-5. 编译并运行程序
-6. 查看控制台输出的各种实现方法的性能对比
-7. 在bmps文件夹中查看生成的结果图像（`Result_Mode0.bmp`、`Result_Mode1.bmp`和`Result_Mode2.bmp`）
+1. 下载项目代码
+2. 选择一个工作空间
+2. 在Code Composer Studio 5.5中导入本工程
+3. rebuild重新编译并通过仿真调试程序
 
 ## 性能分析
 程序会自动测量各种实现方式的处理时间（以时钟周期为单位），并在控制台输出。一般来说，性能提升效果如下：
