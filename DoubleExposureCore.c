@@ -97,12 +97,13 @@ void process_pixels_intrinsic(c674x_dblexp_t *handle)
 			unsigned int src2R_1_3210 = _amem4_const(&pSrc2RowR_1[j]);
 
 			// 计算平均值 (a+b)/2 = (a+b)>>1
-			unsigned int B_0_3210 = _avg4(src1B_0_3210, src2B_0_3210);
-			unsigned int B_1_3210 = _avg4(src1B_1_3210, src2B_1_3210);
-			unsigned int G_0_3210 = _avg4(src1G_0_3210, src2G_0_3210);
-			unsigned int G_1_3210 = _avg4(src1G_1_3210, src2G_1_3210);
-			unsigned int R_0_3210 = _avg4(src1R_0_3210, src2R_0_3210);
-			unsigned int R_1_3210 = _avg4(src1R_1_3210, src2R_1_3210);
+			// 使用标准数学计算替代_avg4
+			unsigned int B_0_3210 = ((src1B_0_3210 & 0xFEFEFEFE) >> 1) + ((src2B_0_3210 & 0xFEFEFEFE) >> 1);
+			unsigned int B_1_3210 = ((src1B_1_3210 & 0xFEFEFEFE) >> 1) + ((src2B_1_3210 & 0xFEFEFEFE) >> 1);
+			unsigned int G_0_3210 = ((src1G_0_3210 & 0xFEFEFEFE) >> 1) + ((src2G_0_3210 & 0xFEFEFEFE) >> 1);
+			unsigned int G_1_3210 = ((src1G_1_3210 & 0xFEFEFEFE) >> 1) + ((src2G_1_3210 & 0xFEFEFEFE) >> 1);
+			unsigned int R_0_3210 = ((src1R_0_3210 & 0xFEFEFEFE) >> 1) + ((src2R_0_3210 & 0xFEFEFEFE) >> 1);
+			unsigned int R_1_3210 = ((src1R_1_3210 & 0xFEFEFEFE) >> 1) + ((src2R_1_3210 & 0xFEFEFEFE) >> 1);
 
 			// 写入4个像素点数据
 			_amem4(&pDstRowB_0[j]) = B_0_3210;

@@ -13,7 +13,7 @@
 /*                                                                          */
 /****************************************************************************/
 -stack 4096
--heap 0x800000
+-heap 0x80000
 MEMORY
 {
     DSPL2ROM     o = 0x00700000  l = 0x00100000   /* 1MB L2 Internal ROM */
@@ -35,29 +35,29 @@ MEMORY
                                                
 SECTIONS                                       
 {                                              
-    .text          >  SHRAM                    
-    .stack         >  SHRAM                    
-    .bss           >  SHRAM                    
-    .cio           >  SHRAM                    
-    .const         >  SHRAM                    
-    .data          >  SHRAM                    
-    .switch        >  SHRAM                    
-    .sysmem        >  SHRAM                    
-    .far           >  SHRAM                    
-    .args          >  SHRAM                    
-    .ppinfo        >  SHRAM
-    .ppdata        >  SHRAM
+    .text          >  DDR2
+    .stack         >  DDR2
+    .bss           >  DDR2
+    .cio           >  DDR2
+    .const         >  DDR2
+    .data          >  DDR2
+    .switch        >  DDR2
+    .sysmem        >  DDR2
+    .far           >  DDR2
+    .args          >  DDR2
+    .ppinfo        >  DDR2
+    .ppdata        >  DDR2
   
     /* COFF sections */
-    .pinit         >  SHRAM
-    .cinit         >  SHRAM
+    .pinit         >  DDR2
+    .cinit         >  DDR2
   
     /* EABI sections */
-    .binit         >  SHRAM
-    .init_array    >  SHRAM
-    .neardata      >  SHRAM
-    .fardata       >  SHRAM
-    .rodata        >  SHRAM
-    .c6xabi.exidx  >  SHRAM
-    .c6xabi.extab  >  SHRAM
+    .binit         >  DDR2
+    .init_array    >  DDR2
+    .neardata      >  DDR2
+    .fardata       >  DDR2
+    .rodata        >  DDR2
+    .c6xabi.exidx  >  DDR2
+    .c6xabi.extab  >  DDR2
 }
