@@ -1,7 +1,7 @@
 ******************************************************************************
                TMS320C6x Linker PC v7.4.4                      
 ******************************************************************************
->> Linked Sat May 17 18:39:07 2025
+>> Linked Sat May 17 19:11:39 2025
 
 OUTPUT FILE NAME:   <Image_exposure.out>
 ENTRY POINT SYMBOL: "_c_int00"  address: c0807ae0
@@ -204,6 +204,9 @@ c0806860   _HOSTread
 c0805440   _HOSTrename
 c0806920   _HOSTunlink
 c08069e0   _HOSTwrite
+c0800900   _Nanwan_alg_create
+c0800b88   _Nanwan_alg_destroy
+c08007a8   _Nanwan_alg_process
 c0809c28   __CIOBUF_
 c0809280   __STACK_END
 00001000   __STACK_SIZE
@@ -279,9 +282,6 @@ c0805fc0   _fseek
 c0801c60   _fwrite
 c0809d50   _handle
 c0807c60   _image_double_exposure
-c0800900   _ljz_alg_create
-c0800b88   _ljz_alg_destroy
-c08007a8   _ljz_alg_process
 c0807620   _lseek
 c0806f20   _ltoa
 c0801c08   _main
@@ -334,9 +334,9 @@ c0800000   ___text__
 c0800000   _process_pixels_c
 c08001c8   _process_pixels_intrinsic
 c0800640   _process_pixels_linear
-c08007a8   _ljz_alg_process
-c0800900   _ljz_alg_create
-c0800b88   _ljz_alg_destroy
+c08007a8   _Nanwan_alg_process
+c0800900   _Nanwan_alg_create
+c0800b88   _Nanwan_alg_destroy
 c0800c20   __divd
 c0801740   _process_single_image
 c0801c08   _main

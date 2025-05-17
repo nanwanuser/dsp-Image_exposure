@@ -1,65 +1,70 @@
 /*
- * DoubleExposureCore.h
+ * DoubleExposureCore.h - 图像二次曝光算法核心头文件
  *
- *  Created on: 2025-5-17
+ * 创建日期: 2025-5-17
+ * 描述: 本文件定义了图像二次曝光处理的内部数据结构和核心函数
  */
 
 #ifndef DOUBLEEXPOSURECORE_H_
 #define DOUBLEEXPOSURECORE_H_
 
-#include "ImageDoubleExposure.h"
+#include "ImageDoubleExposure.h"  /* 包含接口头文件 */
 
 /*----------------------------------------------------------------------------
- * c674x_dblexp_t struct definition
+ * c674x_dblexp_t 结构体定义
  *
- * This struct is used for internal algorithm
+ * 此结构用于算法内部实现，存储处理过程中的图像数据和参数
  *--------------------------------------------------------------------------*/
 typedef struct c674x_dblexp_t{
-	unsigned char *pImgSrc1R;  /* source image 1 R, w*h */
-	unsigned char *pImgSrc1G;  /* source image 1 G, w*h */
-	unsigned char *pImgSrc1B;  /* source image 1 B, w*h */
+    /* 第一幅输入图像的各颜色通道平面数据 */
+    unsigned char *pImgSrc1R;  /* 第一幅源图像R通道, 宽×高 */
+    unsigned char *pImgSrc1G;  /* 第一幅源图像G通道, 宽×高 */
+    unsigned char *pImgSrc1B;  /* 第一幅源图像B通道, 宽×高 */
 
-	unsigned char *pImgSrc2R;  /* source image 2 R, w*h */
-	unsigned char *pImgSrc2G;  /* source image 2 G, w*h */
-	unsigned char *pImgSrc2B;  /* source image 2 B, w*h */
+    /* 第二幅输入图像的各颜色通道平面数据 */
+    unsigned char *pImgSrc2R;  /* 第二幅源图像R通道, 宽×高 */
+    unsigned char *pImgSrc2G;  /* 第二幅源图像G通道, 宽×高 */
+    unsigned char *pImgSrc2B;  /* 第二幅源图像B通道, 宽×高 */
 
-	unsigned char *pImgDstR;   /* destination image R, w*h */
-	unsigned char *pImgDstG;   /* destination image G, w*h */
-	unsigned char *pImgDstB;   /* destination image B, w*h */
+    /* 输出图像的各颜色通道平面数据 */
+    unsigned char *pImgDstR;   /* 目标图像R通道, 宽×高 */
+    unsigned char *pImgDstG;   /* 目标图像G通道, 宽×高 */
+    unsigned char *pImgDstB;   /* 目标图像B通道, 宽×高 */
 
-	int width;                 /* image width */
-	int height;                /* image height */
+    /* 图像尺寸参数 */
+    int width;                 /* 图像宽度（像素） */
+    int height;                /* 图像高度（像素） */
 } c674x_dblexp_t;
 
 /*----------------------------------------------------------------------------
- * Description  : process the input frames, and output state
- * Parameters:
- * 		-handle: algorithm struct c674x_dblexp_t
- * 		-param1: frame struct image_dblexp_frame_t
- * 		-param2: state struct image_dblexp_state_t
- * Return value:
- * 	     0: successful; <0: failed
+ * 描述: 处理输入图像并输出状态
+ * 参数:
+ *      -handle: 算法结构体 c674x_dblexp_t
+ *      -param1: 帧结构体 image_dblexp_frame_t，包含输入输出图像数据和处理模式
+ *      -param2: 状态结构体 image_dblexp_state_t，包含处理结果状态信息
+ * 返回值:
+ *       0: 成功; <0: 失败
  * --------------------------------------------------------------------------*/
-int ljz_alg_process(c674x_dblexp_t *handle,
-		image_dblexp_frame_t *param1,
-		image_dblexp_state_t *param2);
+int Nanwan_alg_process(c674x_dblexp_t *handle,
+        image_dblexp_frame_t *param1,
+        image_dblexp_state_t *param2);
 
 /*----------------------------------------------------------------------------
- * Description:   create algorithm instance, and allocate memories
- * Parameters:
- * 		-param1: create struct image_dblexp_create_t
- * Return value:
- * 	     0: successful; <0: failed
+ * 描述: 创建算法实例并分配内存
+ * 参数:
+ *      -param1: 创建结构体 image_dblexp_create_t，包含图像尺寸信息
+ * 返回值:
+ *       0: 成功; <0: 失败
  * --------------------------------------------------------------------------*/
-int ljz_alg_create(image_dblexp_create_t *param1);
+int Nanwan_alg_create(image_dblexp_create_t *param1);
 
 /*----------------------------------------------------------------------------
- * Description:   destroy algorithm, and free memories
- * Parameters:
- * 		-handle:  algorithm struct c674x_dblexp_t
- * Return value:
- * 	     0: successful; <0: failed
+ * 描述: 销毁算法实例并释放内存
+ * 参数:
+ *      -handle: 算法结构体 c674x_dblexp_t
+ * 返回值:
+ *       0: 成功; <0: 失败
  * --------------------------------------------------------------------------*/
-int ljz_alg_destroy(c674x_dblexp_t *handle);
+int Nanwan_alg_destroy(c674x_dblexp_t *handle);
 
 #endif /* DOUBLEEXPOSURECORE_H_ */
