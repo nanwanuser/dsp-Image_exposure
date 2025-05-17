@@ -1,0 +1,88 @@
+;
+; process_pixels_dblexp_asm.sa
+;  process two lines per time
+;  Created on: 2025-5-17
+;
+
+; 参数含义：
+;       图像1的RGB通道起始地址- src1_B, src1_G, src1_R
+;       图像2的RGB通道起始地址- src2_B, src2_G, src2_R
+;       目标图像的RGB通道地址- dst_B, dst_G, dst_R
+;       图像宽度width
+;       注：为了减少参数数量，高度参数在函数内部硬编码处理
+			.global _process_pixels_dblexp_asm
+
+_process_pixels_dblexp_asm: .cproc src1_B, src1_G, src1_R, src2_B, src2_G, src2_R, dst_B, dst_G, dst_R, wid
+			.no_mdep ;无内存依赖性
+			.reg x_cnt;循环计数器
+			.reg src1_B1, src1_G1, src1_R1; i+1行起始地址
+			.reg src2_B1, src2_G1, src2_R1; i+1行起始地址
+			.reg dst_B1, dst_G1, dst_R1; i+1行起始地址
+			.reg src1B_0_7654:src1B_0_3210, src1G_0_7654:src1G_0_3210, src1R_0_7654:src1R_0_3210
+			.reg src1B_1_7654:src1B_1_3210, src1G_1_7654:src1G_1_3210, src1R_1_7654:src1R_1_3210
+			.reg src2B_0_7654:src2B_0_3210, src2G_0_7654:src2G_0_3210, src2R_0_7654:src2R_0_3210
+			.reg src2B_1_7654:src2B_1_3210, src2G_1_7654:src2G_1_3210, src2R_1_7654:src2R_1_3210
+
+			.reg B_0_7654:B_0_3210, G_0_7654:G_0_3210, R_0_7654:R_0_3210 ;64位寄存器对
+			.reg B_1_7654:B_1_3210, G_1_7654:G_1_3210, R_1_7654:R_1_3210
+
+			ADD src1_B, wid, src1_B1 ; 指向第i+1行
+			ADD src1_G, wid, src1_G1 ; 指向第i+1行
+			ADD src1_R, wid, src1_R1 ; 指向第i+1行
+
+			ADD src2_B, wid, src2_B1 ; 指向第i+1行
+			ADD src2_G, wid, src2_G1 ; 指向第i+1行
+			ADD src2_R, wid, src2_R1 ; 指向第i+1行
+
+			ADD dst_B, wid, dst_B1
+			ADD dst_G, wid, dst_G1
+			ADD dst_R, wid, dst_R1
+
+			SHR wid, 3, x_cnt  ;width/8，因为每次处理8个像素点
+			SUB x_cnt, 1, x_cnt;等于0时还循环了一次，故计数器需要减一
+
+X_LOOP: 	.trip 96,96,96 ; 下述循环体的最小、最大、倍率的可能执行次数
+			; 读取图像1的8个像素
+			LDDW *src1_B++, src1B_0_7654:src1B_0_3210 ; 从内存读取8个字节到寄存器对，然后指针增加8，指向下8个字节的开始
+			LDDW *src1_B1++, src1B_1_7654:src1B_1_3210
+			LDDW *src1_G++, src1G_0_7654:src1G_0_3210
+			LDDW *src1_G1++, src1G_1_7654:src1G_1_3210
+			LDDW *src1_R++, src1R_0_7654:src1R_0_3210
+			LDDW *src1_R1++, src1R_1_7654:src1R_1_3210
+
+			; 读取图像2的8个像素
+			LDDW *src2_B++, src2B_0_7654:src2B_0_3210
+			LDDW *src2_B1++, src2B_1_7654:src2B_1_3210
+			LDDW *src2_G++, src2G_0_7654:src2G_0_3210
+			LDDW *src2_G1++, src2G_1_7654:src2G_1_3210
+			LDDW *src2_R++, src2R_0_7654:src2R_0_3210
+			LDDW *src2_R1++, src2R_1_7654:src2R_1_3210
+
+			; 计算平均值 C=0.5×A+0.5×B
+			AVGU4 src1B_0_3210, src2B_0_3210, B_0_3210 ; 无符号4字节平均
+			AVGU4 src1B_0_7654, src2B_0_7654, B_0_7654
+			AVGU4 src1B_1_3210, src2B_1_3210, B_1_3210
+			AVGU4 src1B_1_7654, src2B_1_7654, B_1_7654
+
+			AVGU4 src1G_0_3210, src2G_0_3210, G_0_3210
+			AVGU4 src1G_0_7654, src2G_0_7654, G_0_7654
+			AVGU4 src1G_1_3210, src2G_1_3210, G_1_3210
+			AVGU4 src1G_1_7654, src2G_1_7654, G_1_7654
+
+			AVGU4 src1R_0_3210, src2R_0_3210, R_0_3210
+			AVGU4 src1R_0_7654, src2R_0_7654, R_0_7654
+			AVGU4 src1R_1_3210, src2R_1_3210, R_1_3210
+			AVGU4 src1R_1_7654, src2R_1_7654, R_1_7654
+
+			; 将计算结果保存到目标内存
+			STDW B_0_7654:B_0_3210, *dst_B++ ; 将8个字节保存到目标内存
+			STDW G_0_7654:G_0_3210, *dst_G++
+			STDW R_0_7654:R_0_3210, *dst_R++
+			STDW B_1_7654:B_1_3210, *dst_B1++
+			STDW G_1_7654:G_1_3210, *dst_G1++
+			STDW R_1_7654:R_1_3210, *dst_R1++
+
+[x_cnt] 	BDEC    X_LOOP, x_cnt  ; 根据计数器x_cnt的值，判断是否退出或继续循环
+
+		.return
+		.endproc

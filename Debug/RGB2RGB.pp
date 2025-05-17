@@ -1,0 +1,5 @@
+# FIXED
+
+RGB2RGB.obj: ../RGB2RGB.c
+
+../RGB2RGB.c: 

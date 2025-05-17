@@ -1,0 +1,1 @@
+"./process_pixels_dblexp_asm.obj" "./main.obj" "./RGB2RGB.obj" "./ImageDoubleExposure.obj" "./DoubleExposureCore.obj" "../C6748.cmd" -l"libc.a" 
