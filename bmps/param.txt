@@ -10,13 +10,13 @@
      <long>65280</long> 
     </void> 
     <void property="lineCount"> 
-     <int>3072</int> 
+     <int>576</int> 
     </void> 
     <void property="lineStride"> 
-     <int>12288</int> 
+     <int>2160</int> 
     </void> 
     <void property="pixelCountPerLine"> 
-     <int>4096</int> 
+     <int>720</int> 
     </void> 
     <void property="pixelStride"> 
      <int>3</int> 
@@ -25,9 +25,12 @@
      <long>255</long> 
     </void> 
     <void property="startAddress"> 
-     <string>p_src</string> 
+     <string>p_src1</string> 
     </void> 
    </object> 
+  </void> 
+  <void property="scrollLock"> 
+   <boolean>true</boolean> 
   </void> 
  </object> 
 </java> 
